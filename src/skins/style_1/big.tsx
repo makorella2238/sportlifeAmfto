@@ -1,51 +1,72 @@
 "use client";
 
-import { useMatch, useScoreboard, useScenario } from "@/hooks";
 import styled, { keyframes } from "styled-components";
+import { useMatch, useScoreboard } from "@/hooks";
+import { createGlobalStyle } from "styled-components";
 
 export const Big = ({ show }: { show: boolean }) => {
   const match = useMatch();
   const { scoreboard } = useScoreboard();
-  const scenario = useScenario();
 
   return (
-    <Wrapper style={{ display: show ? "flex" : "none" }}>
-
-      <ScenarioContainer>
-        <ScenarioGradientLeft />
-        <ScenarioGradientRight />
-      </ScenarioContainer>
-
+    <Wrapper style={{ display: show ? "block" : "none" }}>
+      <LocalFonts />
+      {/* Фолы над row */}
       <Row>
-        <TeamLogo side="left" src={match?.team_1?.img} />
-
-        <TeamBox side="left" color={match?.team_1?.color}>
-          <TeamName side="left">{match?.team_1?.name}</TeamName>
+        <TeamBox side="left">
+          <TeamLogo side="left" src={match.team_1.img} />
+          <InnerBox side="left">
+            <ScoreValue>{scoreboard?.team_1_score}</ScoreValue>
+            <TeamName>{match.team_1.name}</TeamName>
+          </InnerBox>
         </TeamBox>
 
-        <ScoreBox>
-          <ScoreText>
-            {scoreboard?.team_1_score} – {scoreboard?.team_2_score}
-          </ScoreText>
-        </ScoreBox>
-
-        <TeamBox side="right" color={match?.team_2?.color}>
-          <TeamName side="right">{match?.team_2?.name}</TeamName>
+        <TeamBox side="right">
+          <TeamLogo side="right" src={match.team_2.img} />
+          <InnerBox side="right">
+            <TeamName>{match.team_2.name}</TeamName>
+            <ScoreValue>{scoreboard?.team_2_score}</ScoreValue>
+          </InnerBox>
         </TeamBox>
+
+        <TimerText>1T</TimerText>
       </Row>
-
-      <TeamLogo side="right" src={match?.team_2?.img} />
-
-      <ScenarioContainerStart>
-        <ScenarioText>{scenario}</ScenarioText>
-      </ScenarioContainerStart>
     </Wrapper>
   );
 };
 
+const LocalFonts = createGlobalStyle`
+  @font-face {
+    font-family: 'Tablon';
+    src: url('/fonts/tablon-2.ttf') format('truetype');
+    font-weight: 900, 600, 400;
+    font-style: normal;
+    font-display: swap;
+  }
+`;
+
+const gradientGrow = keyframes`
+  0% { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 0.8; }
+`;
+
+const shineAnimation = keyframes`
+  0% {
+    left: -150%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+`;
+
 const slideUp = keyframes`
   from {
-    transform: translateY(100%);
+    transform: translateY(100px);
     opacity: 0;
   }
   to {
@@ -54,200 +75,174 @@ const slideUp = keyframes`
   }
 `;
 
-export const SlideUpDiv = styled.div`
-  animation: ${slideUp} 0.5s ease forwards;
+const timerSlideDown = keyframes`
+  from {
+    transform: translate(-50%, -34px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
 `;
-
 
 const Wrapper = styled.div`
   position: absolute;
-  bottom: 60px;
-  left: 13%;
+  bottom: 70px;
+  left: 19%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  font-family: "Furore", sans-serif;
   z-index: 100;
-  animation: ${slideUp} 0.5s ease forwards;
+  animation: ${slideUp} 1.2s ease-out forwards;
+  width: 1213px;
+  font-family: "Tablon", sans-serif;
 `;
 
 const Row = styled.div`
-  width: 1420px;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center; /* центрируем содержимое по вертикали */
-  justify-content: center;
-  gap: 0;
-  height: 135px;
-  border-radius: 24px;
-  background: #0e173f;
-  box-sizing: border-box;
-`;
-
-const TeamBox = styled.div<{ side: "left" | "right"; color?: string }>`
-  width: 560px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  /* по центру по вертикали */
-  height: 90px;
-
-  clip-path: ${(props) =>
-    props.side === "left"
-      ? "polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0% 100%)"
-      : "polygon(8px 0, 100% 0, 100% 100%, 0 100%)"};
-
-  ${(props) =>
-    props.side === "left"
-      ? "transform: translateX(8px);"
-      : "transform: translateX(-8px);"}
-
-  z-index: 10;
-  overflow: visible;
-`;
-
-const TeamLogo = styled.img<{ side: "left" | "right" }>`
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  left: ${(props) => (props.side === "left" ? "-80px" : "auto")};
-  right: ${(props) => (props.side === "right" ? "-20px" : "auto")};
-  top: ${(props) => (props.side === "right" ? "110px" : "60px")};
-  transform: translateY(-50%);
-  z-index: 20;
-`;
-
-const TeamName = styled.div<{ side: "left" | "right" }>`
-  width: calc(100% - 70px);
-  font-family: "Furore", sans-serif;
-  font-weight: 400;
-  font-size: 46px;
-  line-height: 48px;
-  letter-spacing: 0%;
-  text-transform: uppercase;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 100%;
-
-  text-align: ${(props) => (props.side === "left" ? "right" : "left")};
-
-  padding-left: ${(props) => (props.side === "left" ? "40px" : "40px")};
-  margin-right: ${(props) => (props.side === "right" ? "60px" : "30px")};
-
-  position: relative;
-  mask-image: linear-gradient(to right, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
-  z-index: 1;
-`;
-
-const ScenarioContainer = styled.div`
-  position: relative;
-  width: 820px;
-  height: 43px;
-  margin: 0 auto;
-  display: flex;
-  top: 60px; /* убираем top, если не нужно */
-  left: auto;
-  z-index: 0;
-`;
-
-const ScenarioGradientLeft = styled.div`
-  width: 50%;
-  height: 100%;
-  clip-path: polygon(8px 0, 100% 0, 100% 100%, 0% 100%);
-  background: linear-gradient(90deg, #00a954 0%, #095102 51.98%, #00a954 100%);
-  position: relative;
-  z-index: 1;
-`;
-
-const ScenarioGradientRight = styled.div`
-  width: 50%; // правая половина
-  height: 100%;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
-  background: red;
-  position: relative;
-  z-index: 2;
-`;
-
-const ScoreBox = styled.div`
-  position: relative;
-  background: url("bigimg.png") no-repeat center center / cover;
-  color: #fff;
-  font-weight: bold;
-  padding: 0 40px;
-  height: 79px;
-  display: flex;
+  grid-template-columns: 1fr 1px 1fr;
   align-items: center;
-  justify-content: center;
-  width: 297px;
-  z-index: 1;
-`;
-
-
-const ScoreText = styled.div`
   width: 100%;
-  font-size: 64px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1;
-`;
-
-const ScenarioContainerStart = styled.div`
-  position: absolute;
-  top: -17px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 282px;
-  height: 60px;
-  border-radius: 80px 80px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-  overflow: hidden;
-
-  background: linear-gradient(90deg, #f2071a 0%, #181818 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(28, 29, 31, 0.9) 0%,
+    rgba(35, 37, 40, 0.8) 100%
+  );
+  color: #d7deea;
+  border-radius: 5px;
+  overflow: visible;
+  box-shadow: rgba(0, 0, 0, 0.15) 10px 10px 20px,
+    rgba(0, 0, 0, 0.15) 1px 1px 0px, rgba(255, 255, 255, 0.1) 1px 1px 0px inset;
+  overflow: visible; /* чтобы было видно абсолютные дети */
 
   &::before {
     content: "";
     position: absolute;
-    top: 0;  /* сверху */
-    left: 0;
-    width: 100%;
-    height: 2px; /* толщина обводки */
-    background: linear-gradient(90deg, #0B7AC4 0%, #FFFFFF 100%);
-    border-radius: 80px 80px 0 0; /* скругления только сверху */
-    z-index: 6; /* поверх содержимого */
+    top: 0;
+    left: -150%; /* старт за левой границей */
+    width: 50%;
+    height: 96px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    filter: blur(75px);
+    opacity: 0;
+    animation: ${shineAnimation} 5s ease-in-out forwards infinite;
+    pointer-events: none;
+    z-index: 10;
   }
 `;
 
+const TeamBox = styled.div<{ side: "left" | "right" }>`
+  width: 610px;
+  border-radius: ${({ side }) =>
+    side === "right" ? "0 10px 10px 0" : "10px 0 0 10px"};
+  display: flex;
+  align-items: center;
+  padding: ${({ side }) => (side === "right" ? "0 10px 0 0" : "0 0 0 10px")};
+  justify-content: ${({ side }) =>
+    side === "left" ? "flex-start" : "flex-end"};
+  height: 96px;
+  position: relative;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 20px;
 
-// Скорректируем ScenarioText, чтобы занял всё пространство
-const ScenarioText = styled.div`
-  flex: 1;
-  font-family: "Furore", sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  color: #fff;
-  padding: 0 20px;
-  line-height: 1;
+  &::after {
+    content: "";
+    max-width: 160px;
+    width: 100%;
+    opacity: 0.8;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    ${({ side }) => (side === "left" ? "right: 0;" : "left: -1px;")}
+    z-index: 5;
+    background: ${({ side }) =>
+      side === "left"
+        ? "linear-gradient(90deg, rgba(198, 7, 123, 0) 0%, rgba(209, 37, 95, 0.75) 50%, rgb(221, 66, 68) 100%)"
+        : "linear-gradient(90deg, rgb(221, 66, 68) 0%, rgba(232, 96, 40, 0.75) 50%, rgba(244, 125, 14, 0) 100%)"};
+    animation: ${gradientGrow} 3s ease forwards;
+  }
+`;
+
+const TeamLogo = styled.img<{ side: "left" | "right" }>`
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  ${({ side }) => (side === "left" ? "left: -70px;" : "right: -60px;")}
+`;
+
+const InnerBox = styled.div<{ side: "left" | "right" }>`
+  display: flex;
+  flex-direction: ${({ side }) => (side === "right" ? "row" : "row-reverse")};
+
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+`;
+
+const TeamName = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  font-size: 32px;
+  font-family: var(--font-tablon);
+  color: #d7deea;
+  font-weight: 700;
+  max-width: 300px;
+  text-align: center;
+
   white-space: nowrap;
-  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  height: 60px;
+  line-height: 60px;
+`;
+
+const ScoreValue = styled.div`
+  font-size: 56px;
+  font-weight: 900;
+  color: #d7deea;
+  min-width: 50px;
+  text-align: center;
+  z-index: 10;
+  font-family: "Arial", sans-serif;
+`;
+
+const TimerText = styled.div`
+  position: absolute;
+  bottom: -34px;
+  left: 50%;
+  font-family: "Arial", sans-serif;
+  transform: translate(-50%, 0);
+  width: 160px;
+  height: 34px;
+  background: rgba(12, 26, 39, 0.8);
+  color: #c2cbdb;
+  font-size: 16px;
+  line-height: 34px;
+  padding: 0 10px;
+  font-weight: 600;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ScenarioSlashLeft = styled.div`
-  width: 0; // убираем ширину, т.к. срезы есть в clip-path
-`;
-
-const ScenarioSlashRight = styled.div`
-  width: 0; // то же самое
+  z-index: 10;
+  opacity: 0;
+  animation: ${timerSlideDown} 1.2s ease-out 3s forwards;
 `;

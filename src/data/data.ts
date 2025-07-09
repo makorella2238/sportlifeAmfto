@@ -814,10 +814,10 @@ export const teams_data: Teams = {
 
 export const scoreboard_data: Scoreboard = {
   team_1_score: 1,
-  team_2_score: 0,
+  team_2_score: 2,
   is_fouls: true,
-  team_1_fouls: 1,
-  team_2_fouls: 0
+  team_1_fouls: 0,
+  team_2_fouls: 2
 };
 
 export const timer_data: TimerData = {
