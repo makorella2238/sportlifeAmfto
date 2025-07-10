@@ -129,7 +129,7 @@ const Wrapper = styled.div`
 `;
 
 const TeamBox = styled.div<{ side: "left" | "right" }>`
-  width: 400px;
+  width: 345px;
   border-radius: ${({ side }) =>
     side === "right" ? "0 10px 10px 0" : "10px 0 0 10px"};
   display: flex;
@@ -301,9 +301,10 @@ const TeamLogo = styled.img<{ side: "left" | "right" }>`
 const TeamName = styled.div`
   font-weight: 900;
   color: #d7deea;
-  font-size: 22px;
+  font-weight: 900;
+  font-size: 20px;
   letter-spacing: 0.02em;
-  font-family: var(--font-tablon);
+  font-family: "Tablon", sans-serif;
   display: flex; /* переключаем на флекс-контейнер */
   align-items: center; /* вертикальное центрирование */
   justify-content: center; /* горизонтальное центрирование, если нужно */

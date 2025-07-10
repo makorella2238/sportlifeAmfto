@@ -11,23 +11,20 @@ export const HomeRoster = ({ show }: { show: boolean }) => {
   const coaches = match?.team_1?.coaches || [];
   const representatives = match?.team_1?.representativs || [];
 
-  
   return (
     <Container style={{ display: show ? "flex" : "none" }}>
       <Wrapper>
-        <BackgroundImage >
+        <BackgroundImage>
           <HexBackground />
         </BackgroundImage>
 
         <TeamLogo src={match?.team_1?.img} alt="Team Logo" />
 
-        <RosterTitle>
-          СОСТАВ: {teamName}
-        </RosterTitle>
+        <RosterTitle>СОСТАВ: {teamName}</RosterTitle>
 
         <GridWrapper>
           {players.slice(0, 18).map((player, i) => (
-            <PlayerBlock key={i}>
+            <PlayerBlock key={i} delay={i * 0.15}>
               <NumberAndNameWrapper>
                 <NameBlock>
                   {i + 1} {player.player_fio}
@@ -55,6 +52,17 @@ export const HomeRoster = ({ show }: { show: boolean }) => {
     </Container>
   );
 };
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const slideDown = keyframes`
   from {
@@ -117,7 +125,6 @@ const TeamLogo = styled.img`
   z-index: 20;
 `;
 
-
 const RosterTitle = styled.div`
   font-size: 36px;
   font-weight: 800;
@@ -148,16 +155,20 @@ const NumberAndNameWrapper = styled.div`
   overflow-wrap: break-word;
 `;
 
-const PlayerBlock = styled.div`
+const PlayerBlock = styled.div<{ delay?: number }>`
   position: relative;
   display: flex;
   padding: 10px 20px;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(184, 183, 183, 0.3); /* сделано прозрачнее */
+  background-color: rgba(184, 183, 183, 0.3);
   width: 271.5px;
   height: 60px;
   box-sizing: border-box;
+
+  animation: ${fadeInUp} 0.4s ease-out forwards;
+  opacity: 0;
+  animation-delay: ${({ delay }) => delay ?? 0}s;
 `;
 
 const NameBlock = styled.div`

@@ -77,6 +77,19 @@ const LocalFonts = createGlobalStyle`
   }
 `;
 
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+
 const slideDown = keyframes`
   from {
     transform: translateY(-100%);
@@ -187,7 +200,9 @@ const TeamLogo = styled.img`
   margin-bottom: 42px;
   aspect-ratio: 1;
   max-width: 260px;
+  animation: ${pulse} 3s ease-in-out infinite;
 `;
+
 
 const TourContainer = styled.div`
   display: flex;

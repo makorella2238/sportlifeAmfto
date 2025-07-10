@@ -26,7 +26,7 @@ export const AwayRoster = ({ show }: { show: boolean }) => {
 
         <GridWrapper>
           {players.slice(0, 18).map((player, i) => (
-            <PlayerBlock key={i}>
+            <PlayerBlock key={i} delay={i * 0.15}>
               <NumberAndNameWrapper>
                 <NameBlock>
                   {i + 1} {player.player_fio}
@@ -54,6 +54,17 @@ export const AwayRoster = ({ show }: { show: boolean }) => {
     </Container>
   );
 };
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const slideDown = keyframes`
   from {
@@ -146,18 +157,21 @@ const NumberAndNameWrapper = styled.div`
   overflow-wrap: break-word;
 `;
 
-const PlayerBlock = styled.div`
+const PlayerBlock = styled.div<{ delay?: number }>`
   position: relative;
   display: flex;
   padding: 10px 20px;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(184, 183, 183, 0.3); /* сделано прозрачнее */
+  background-color: rgba(184, 183, 183, 0.3);
   width: 271.5px;
   height: 60px;
   box-sizing: border-box;
-`;
 
+  animation: ${fadeInUp} 0.4s ease-out forwards;
+  opacity: 0;
+  animation-delay: ${({ delay }) => delay ?? 0}s;
+`;
 const NameBlock = styled.div`
   font-size: 17px;
   text-transform: uppercase;

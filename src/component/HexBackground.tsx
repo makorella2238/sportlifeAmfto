@@ -44,7 +44,7 @@ export const HexBackground = () => {
       id: i,
       top: randomFloat(-20, 120),
       left: randomFloat(-20, 120),
-      size: randomFloat(50, 200),
+      size: randomFloat(100, 300),
       animationKey: Math.random().toString(),
     }));
     setHexes(initialHexes);
@@ -58,7 +58,7 @@ export const HexBackground = () => {
           ...hex,
           top: randomFloat(-20, 120),
           left: randomFloat(-20, 120),
-          size: randomFloat(50, 200),
+          size: randomFloat(100, 300),
           animationKey: Math.random().toString(), // изменяем ключ чтобы заново анимировалось
         }))
       );
