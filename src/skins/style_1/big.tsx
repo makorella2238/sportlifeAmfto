@@ -232,7 +232,7 @@ const TimerText = styled.div`
   transform: translate(-50%, 0);
   width: 160px;
   height: 34px;
-  background: rgba(12, 26, 39, 0.8);
+  background: rgba(28, 29, 31, 0.9);
   color: #c2cbdb;
   font-size: 16px;
   line-height: 34px;
