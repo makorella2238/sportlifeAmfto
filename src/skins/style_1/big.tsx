@@ -40,7 +40,7 @@ const LocalFonts = createGlobalStyle`
     font-family: 'Tablon';
     src: url('/fonts/tablon-2.ttf') format('truetype');
     font-weight: 900, 600, 400;
-    font-style: normal;
+    font-style: extra-bold, semi-bold, normal;
     font-display: swap;
   }
 `;
@@ -198,10 +198,10 @@ const TeamName = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-
+  font-family: "Tablon", sans-serif;
   font-size: 32px;
-  font-family: var(--font-tablon);
   color: #d7deea;
+  font-weight: extra-bold;
   font-weight: 700;
   max-width: 300px;
   text-align: center;
