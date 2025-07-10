@@ -71,7 +71,7 @@ const LocalFonts = createGlobalStyle`
   @font-face {
     font-family: 'Lozung';
     src: url('/fonts/Lozung.ttf') format('truetype');
-    font-weight: 300, 400, 600, 700;
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
   }
