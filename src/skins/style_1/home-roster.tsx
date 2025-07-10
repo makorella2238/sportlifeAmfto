@@ -24,7 +24,7 @@ export const HomeRoster = ({ show }: { show: boolean }) => {
 
         <GridWrapper>
           {players.slice(0, 18).map((player, i) => (
-            <PlayerBlock key={i} delay={i * 0.15}>
+            <PlayerBlock key={i} delay={i * 0.12}>
               <NumberAndNameWrapper>
                 <NameBlock>
                   {i + 1} {player.player_fio}
