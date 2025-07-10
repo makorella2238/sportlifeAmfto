@@ -48,8 +48,8 @@ export const Person = ({
         <TeamBox side="left" kind={kind}>
           <Col>
             <Row>
-              <TeamName side="left">ДМИТРИЙ ПОКРОВСКИЙ</TeamName>
               <TeamName side="left">28</TeamName>
+              <TeamName side="left">ДМИТРИЙ ПОКРОВСКИЙ</TeamName>
             </Row>
             <TeamNameLit side="left">{match?.team_1?.name}</TeamNameLit>
           </Col>
@@ -83,14 +83,19 @@ const BackgroundLayer = styled.div`
 const Row = styled.div`
   position: absolute;
   top: -15px;
-  right: 0px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center;
   gap: 16px;
   width: 560px;
   padding: 6px 12px;
   z-index: 10;
-  background: linear-gradient(90deg, #b97800 0%, #e29602 55.5%, #b97802 100%);
+  background: radial-gradient(transparent 25%, #0000004f), rgba(239, 109, 21, 0.85);
 `;
+
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -136,7 +141,7 @@ const TeamBoxWrapper = styled.div`
 `;
 const PersImage = styled.img`
   position: absolute;
-  top: -145px;
+  top: -165px;
   left: 95px;
   width: 150px;
   height: 150px;
@@ -179,10 +184,10 @@ const Col = styled.div`
 const TeamName = styled.div<{ side: "left" | "right" }>`
   height: 40px;
   display: flex;
-
   align-items: center;
+  justify-content: center; /* Добавлено */
   font-family: "Furore", sans-serif;
-  font-size: 35px;
+  font-size: 24px;
   text-transform: uppercase;
   color: #fff;
   white-space: nowrap;
@@ -197,9 +202,10 @@ const TeamNameLit = styled.div<{ side: "left" | "right" }>`
   display: flex;
   align-items: center;
   font-family: "Furore", sans-serif;
-  font-size: 24px;
+  font-weight: 300;
+  font-size: 16px;
   text-transform: uppercase;
-  color: #fff;
+  color:rgb(224, 224, 224) ; /* Светло-серый цвет */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
